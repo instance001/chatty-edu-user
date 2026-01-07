@@ -1,0 +1,31 @@
+# Runtime data (keep only app/policy defaults tracked)
+data/**
+!data/
+!data/config/
+!data/config/app.json
+!data/config/policy.json
+!data/homework/
+!data/homework/assigned/
+!data/homework/assigned/.gitkeep
+!data/homework/completed/
+!data/homework/completed/.gitkeep
+!data/logs/
+!data/logs/.gitkeep
+!data/models/
+!data/models/.gitkeep
+!data/revision/
+!data/revision/.gitkeep
+!data/runtime/
+!data/runtime/.gitkeep
+
+# Ignore generated/runtime content
+data/config/settings.json
+data/config/ui_state.json
+
+*.log
+.DS_Store
+*.gguf
+*.bin
+*.pt
+*.safetensors
+*.onnx
