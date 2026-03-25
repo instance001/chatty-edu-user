@@ -1,57 +1,98 @@
-# Chatty-EDU Teacher Manual (v0.4)
+# Chatty-EDU Teacher Manual
 
 Audience: teachers and school IT. Everything runs offline by default; no accounts or cloud calls.
 
 ## What you need
-- A Windows PC.
-- The Chatty-EDU folder with `chatty-edu.exe` and the `data/` folder kept together.
-- Optional: a USB drive if you want a portable setup (copy the whole folder to the USB).
+- Windows PC
+- At least 1 approved GGUF model placed into `data/models/`
+- Optional: USB for portable data with `--base-path <USB path>`
 
-## First run (GUI)
-1) Double-click `chatty-edu.exe`.
-2) Models (offline AI):
-   - Bring your own GGUF model (none is included in this repo).
-   - Drop any GGUF into `data/models/`, then File -> Models to select.
-   - Model guidance/licensing notes: see `resources/models/` (e.g., `resources/models/qwen/README.md`).
-3) Teacher lock:
-   - Default PIN `0000`. Teacher menu -> unlock with PIN (or secret answer if set).
-   - While unlocked: change PIN, set secret question/answer, adjust game and hint settings. Lock when done.
-4) Import/build packs:
-   - Home tab -> "Import pack file" (copies to `data/homework/assigned/`).
-   - Sample pack: `resources/homework_pack_sample_bundle.json` (copy into your data folder or import directly).
-   - If a pack references attachments, copy the `resources/attachments/` folder into `data/homework/assigned/`.
-5) Review + tutor:
-   - Home tab + Homework Dashboard: assignments, filters, submissions, metrics; Teacher menu shows submissions summary.
-   - Homework & Revision module: "Ask for hints" + "LLM homework helper" tied to the selected assignment; hints-only mode is teacher-configurable.
-   - Submissions are written to `data/homework/completed/` and include a hash-chained event log (start/answer/hint/retry/finalize) plus a final_hash for tamper-evidence.
+## First run
+1. Open `chatty-edu.exe` (add `--base-path ...` if you want data on a USB or managed folder).
+2. Models:
+   - Drop any approved GGUF into `data/models/`.
+   - On startup, Chatty-EDU auto-scans that folder and assigns the largest valid GGUF to the main AI role.
+   - If 2 or more valid GGUFs are present, the smallest detected model is assigned to the Bookkeeper role. If only 1 model is present, Bookkeeper stays in keyword-only summary mode.
+   - You can still override or inspect roles via File -> Models.
+   - Model guidance and licensing notes are included under `resources/models/`.
+3. Teacher lock:
+   - Default PIN is `0000`. Teacher menu -> unlock with PIN, or use the secret answer if you have set one.
+   - While unlocked, change the PIN, set the secret question or answer, adjust game settings, and configure hints-only mode. Lock when done.
+4. Import or build packs:
+   - Option A (Markdown-first): put a pack `.md` into `data/homework/outgoing/` or generate it in the Teacher Dashboard, then click "Transcribe outgoing (.md -> .json)".
+   - Option B (JSON): import a pack `.json` into `data/homework/assigned/` via the Home tab or Teacher menu.
+   - Sample packs and attachment examples are included under `resources/`.
+5. Review and tutor:
+   - Home and Homework Dashboard cover assignments, submissions, metrics, and teacher summary tools.
+   - Home and Main Chat are homework-aware. If a student asks or rephrases an active homework question there, the app intercepts it before generation and pushes the model into a Socratic hint-only response.
+   - Chat includes `Chatty's thoughts` on the left and `Memory jogger` on the right.
+   - Revision is separate from live homework and works from completed homework plus past papers.
 
 ## Homework basics
-- Packs are JSON (`homework_pack_*.json`). Place/import into `data/homework/assigned/`.
-- Students: select assignment, fill "Submit work", attach files if allowed, then "Export submission file" -> `submission_<assignment_id>_<student>.json` in `data/homework/completed/`.
-- Collect student submissions and place them in your `data/homework/completed/`; click "Rescan packs + submissions".
+- Packs are authored in Markdown under `data/homework/outgoing/` and transcribed into JSON packs under `data/homework/assigned/`, or you can import JSON directly.
+- Optional per-assignment sections in pack Markdown:
+  - `### Student Printable` for a handout or visible worksheet text
+  - `### Rubric` or `### Marking Guide` for teacher marking guidance
+- Use `year_level` as the canonical metadata key in Markdown pack files. Import and transcribe also accept `year`, `year level`, `grade`, `grade level`, and `year group`.
+- If a question refers to a worksheet, list, table, chart, or handout, place that material in `### Student Printable` or `attachments:` so students can actually see it in-app.
+- Students export submission JSON into `data/homework/completed/`.
+- Teacher Dashboard can export:
+  - marking sheets to `data/homework/marking/`
+  - student printables to `data/homework/printables/`
+  - teacher rubrics to `data/homework/rubrics/`
 
 ## Revision basics
-- Students can reopen any pack to practice.
-- Tutor (in Homework & Revision) and Chat can give hints/steps, not full answers; hints-only mode can be enforced.
+- Revision is separate from live homework. It uses completed submissions from `data/homework/completed/` plus any imported past papers in `data/revision/past_papers/`.
+- Students can save their own revision notes or progress under `data/revision/notes/`.
+- Student-facing Revision hides teacher-side scores and diagnostic labels.
 
-## Data layout (under `data/` next to the exe)
-- `config/` settings/UI
-- `homework/assigned/` packs
-- `homework/completed/` submissions
-- `models/` GGUF files
-- `modules/` manifests
-- `themes/` active theme + presets
-- `runtime/`, `logs/`, `revision/`, `ide/` reserved folders
+## Memory and logs
+- `Chatty's thoughts` is session-only. It shows recent message-pair context that the main chat is actively using and clears when the app closes.
+- `Memory jogger` persists across sessions as a short local summary built from recent activity when the app closes.
+- Sidebar entries may preview-truncate in the narrow panel, but they show fuller text on hover.
+- Teacher-only Bookkeeper logs are available from File -> Models after teacher unlock. That tab is meant for local log search and support diagnosis, not for students.
+- The in-app Bookkeeper tab is PIN-gated for convenience, but it is still just a local UI boundary; the underlying files remain local files on disk.
 
-## Safety/offline
-- Offline-first; no network calls in core flows.
-- Content filter (Janet) on by default; external process modules disabled unless allowed.
+## CLI admin
+Run:
+
+```powershell
+.\chatty-edu.exe --mode cli
+```
+
+Useful commands:
+- `generate_pack_md`
+- `transcribe_outgoing`
+- `convert_submissions_to_md`
+- `export_printables`
+- `export_rubrics`
+- `import_pack <path>`
+- `import_submissions`
+- `show_completed`
+- `mode class`
+- `mode free`
+- `games on`
+- `games off`
+- `set_pin`
+- `set_secret`
+
+## Data layout
+- `data/config/` settings, UI state, and Bookkeeper memory files
+- `data/config/bookkeeper/` cold logs plus `memory_jogger.txt`
+- `data/homework/outgoing/` pack Markdown
+- `data/homework/assigned/` pack JSON
+- `data/homework/completed/` submissions
+- `data/homework/marking/` marking Markdown
+- `data/homework/printables/` student printables
+- `data/homework/rubrics/` teacher rubrics
+- `data/revision/notes/` saved revision notes and progress
+- `data/revision/past_papers/` imported past papers and teacher revision materials
+- `data/models/` GGUF files
 
 ## Troubleshooting
-- Missing packs/submissions: click "Rescan packs + submissions" and confirm the `data/` folder is next to the exe.
-- Model not listed: confirm the file ends in `.gguf`, then open File -> Models (refresh or restart the app).
-- Reset settings: delete `data/config/settings.json` and relaunch.
-
-## License
-- Licensed under the GNU Affero General Public License v3.0.
-- See `LICENSE` for the full text.
+- No model selected on startup: drop a GGUF into `data/models/` and relaunch, or refresh via File -> Models. If only one model is present, the main AI uses it and Bookkeeper stays in keyword-only mode.
+- Revision or chat helper says no valid model is selected: choose a GGUF via File -> Models and confirm the file still exists under `data/models/`.
+- Missing packs or submissions: click "Rescan packs + submissions".
+- Missing worksheet, list, or attachment in student view: confirm it is included in `### Student Printable` or `attachments:` and not only mentioned in the instructions text.
+- Odd symbols or broken table characters in chat: the app now normalizes most model output to plain readable text; if a model still emits malformed content, try a different prompt or GGUF.
+- PIN issues: use Teacher menu or CLI `teacher` -> `forgot`, then set a new PIN.
