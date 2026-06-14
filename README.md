@@ -33,6 +33,47 @@ Chatty-EDU never connects to the internet in normal use and does not require ext
 - Automatic model role selection: on boot, Chatty-EDU scans `data/models/`, gives the largest valid GGUF to the main chat role, gives the smallest to the Bookkeeper role when 2+ models are present, and falls back to a friendly setup message when no model is available.
 - Plain-text-safe rendering: model output is normalized before display so unsupported Unicode, prompt-template markers, and odd table characters degrade into readable text instead of broken glyphs.
 
+## Compounding workflow loops
+
+This bundle is not only for one-off chat or homework help.
+It can also be used as an in-app iteration surface where one step improves the next step.
+
+Because Chatty-EDU includes:
+
+- the main AI
+- local memory surfaces
+- a local sandbox
+- hosted module tabs
+- and module handoff / rundown lanes
+
+you can keep a longer workflow moving inside the app instead of minimizing back to the desktop between each tool.
+
+Examples:
+
+- draft a homework or revision pack
+- keep teacher notes or prompt drafts in the sandbox
+- open a hosted module tab for a more specialized dashboard
+- return to the main AI with that module context still available
+- refine the next pack, printable, prompt, or classroom resource
+
+For builders using the broader Chatty ecosystem, the same loop can extend outward:
+
+- prepare a `chatty-quest` dataset or content template
+- inspect or iterate on outputs from a hosted `chatty-art` lane
+- ask for `chatty-lora` advice on prompts, dataset shape, or training preparation
+- repeat the cycle from inside the EDU shell
+
+The value is the flywheel:
+
+- draft
+- inspect
+- improve
+- hand off
+- repeat
+
+Chatty-EDU does not merge every tool into one app.
+It gives you one local window where those tools can stay visible, hand off context, and compound more smoothly.
+
 ## Models
 - Model weights are not included in this bundle.
 - Drop an approved GGUF into `data/models/`.
