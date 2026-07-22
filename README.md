@@ -1,8 +1,8 @@
 # Chatty-EDU User Bundle
 
-Offline, local-first learning assistant for schools. No cloud, no accounts, no tracking. This folder is a packaged Windows bundle for end users, not the source repository.
+Offline, local-first learning assistant for schools. No cloud dependency, no accounts, no tracking. This folder is a packaged Windows bundle for end users, not the source repository.
 
-Chatty-EDU never connects to the internet in normal use and does not require external services to function.
+Chatty-EDU never connects to the internet in normal use and does not require external services to function. Here, offline-first is a school trust boundary; elsewhere in the wider Chatty ecosystem, cloud-optional provider lanes are used only where a tool explicitly supports them.
 
 ## Start here
 1. Open `chatty-edu.exe`.
