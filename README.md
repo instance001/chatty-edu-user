@@ -11,6 +11,33 @@ Chatty-EDU never connects to the internet in normal use and does not require ext
 4. Import a homework pack into `data/homework/assigned/` or use Home -> "Import pack file".
 5. Keep the Teacher menu locked on student-facing machines and change the default PIN on first teacher use.
 
+## Bundle Flow Map
+
+```mermaid
+flowchart TB
+    user["Student / teacher / school IT"] --> exe["chatty-edu.exe<br/>local Windows app"]
+    exe --> trust["Offline trust boundary<br/>no cloud dependency, no accounts, no tracking"]
+
+    models["data/models/<br/>approved GGUF files"] --> roles["Auto model roles<br/>largest = main AI<br/>smallest = Bookkeeper when available"]
+    roles --> chat["Main Chat<br/>help, hints, revision, teacher drafting"]
+
+    packs["Homework pack<br/>import file or data/homework/assigned/"] --> home["Home tab<br/>assignment, worksheet, submission flow"]
+    home --> guardrails["Homework guardrails<br/>hints instead of answer dumping"]
+    guardrails --> chat
+    home --> completed["data/homework/completed/<br/>student submission JSON"]
+
+    teacher["Teacher menu<br/>PIN-gated"] --> teacherFlow["Teacher workflows<br/>packs, revision, marking, printables"]
+    teacherFlow --> packs
+
+    chat --> memory["Local memory surfaces<br/>session thoughts + memory jogger + Bookkeeper files"]
+    memory --> chat
+
+    exe --> sandbox["Local sandbox<br/>notes, drafts, task work"]
+    sandbox --> chat
+
+    exe -. visible local activity .-> ecg["ECG window<br/>device activity cue, not telemetry"]
+```
+
 ## Included in this bundle
 - `chatty-edu.exe` - the desktop application
 - `README.md` - this quick overview
