@@ -35,7 +35,7 @@ flowchart TB
     exe --> sandbox["Local sandbox<br/>notes, drafts, task work"]
     sandbox --> chat
 
-    exe -. visible local activity .-> ecg["ECG window<br/>device activity cue, not telemetry"]
+    exe -. visible local activity .-> ecg["ECG window<br/>local activity cue, not remote telemetry"]
 ```
 
 ## Included in this bundle
@@ -129,4 +129,5 @@ The rest of the `data/` tree is created automatically as the app runs.
 - Offline by default; no network calls in core flows.
 - Bookkeeper memory stays local under `data/config/bookkeeper/`.
 - `Chatty's thoughts` is session-only, while `Memory jogger` persists locally across sessions.
-- The ECG window reads local Windows counters only; it is a transparency cue, not telemetry.
+- Chatty-EDU has no remote telemetry or analytics in normal use.
+- The ECG window reads local Windows counters only; it is a transparency cue, not remote telemetry.

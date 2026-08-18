@@ -29,7 +29,7 @@ All data is stored on disk under the base path:
   - `homework/printables/student_*.md` (student printables)
   - `homework/rubrics/rubric_*.md` (teacher rubrics or marking guides)
 
-Chatty-EDU does not include telemetry, analytics, or a remote logging service.
+Chatty-EDU does not include remote telemetry, analytics, or a remote logging service. The ECG window does read local Windows performance counters for the on-screen activity cue; it does not send those samples anywhere.
 Teacher-side AI premark data may exist inside local submission files, but the student Revision view hides raw score and diagnostic labels.
 `Chatty's thoughts` is not a separate saved file; it is session-only context that clears when the app closes.
 
