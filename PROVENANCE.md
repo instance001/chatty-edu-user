@@ -32,3 +32,7 @@ GitHub API licence field at inventory time: `AGPL-3.0`. This is a metadata obser
 ## Evidence and limitations
 
 Evidence: authenticated GitHub API metadata captured by the FMI provenance audit. Contribution, prior art, ownership, contributors, document licensing, relationships, releases, and publication status require human verification.
+
+## Evidence-led lineage position
+
+Git history identifies this repository as a packaged, user-focused Windows release aligned with Chatty-EDU source v0.4; its README identifies it as a distribution bundle rather than the source repository. It is therefore a `HISTORICAL`/distribution record for provenance and release access, not evidence of a separately originated education architecture. The bundle documents offline-first local data, BYO GGUF models, teacher/student manuals, homework/revision surfaces, and local Bookkeeper files. Source-level mechanisms and current feature claims should be verified against `instance001/chatty-edu` rather than inferred from this package alone.
